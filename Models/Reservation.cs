@@ -29,6 +29,8 @@ namespace Flights.Models
 
         [Required]
         public string TicketType { get; set; }
+
+        public virtual Flight Flight { get; set; }
         //[Required]
         //public int NumberOfTickets { get; set; }
     }
