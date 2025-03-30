@@ -67,7 +67,7 @@ namespace Flights.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create([Bind("FlightID,StartLocation,EndLocation,StartDateTime,EndDateTime,PilotName,PlaneID")] Flight flight)
         {
-            flight.Reservations = new List<Reservation>();
+            //flight.Reservations = new List<Reservation>();
             if (ModelState.IsValid)
             {
                 _context.Add(flight);

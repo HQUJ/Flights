@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Flights.Models
 {
@@ -24,9 +25,10 @@ namespace Flights.Models
         [Required]
         public string PilotName { get; set; }
 
-        [Required]
-        public int PlaneID { get; set; }
+        public int? PlaneID { get; set; }
+        [ForeignKey("PlaneID")]
+        public Plane? Plane { get; set; }
 
-        public virtual ICollection<Reservation> Reservations { get; set; }
+        public virtual ICollection<Reservation>? Reservations { get; set; }
     }
 }

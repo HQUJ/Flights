@@ -4,6 +4,7 @@ using Flights.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Flights.Migrations
 {
     [DbContext(typeof(FlightsContext))]
-    partial class FlightsContextModelSnapshot : ModelSnapshot
+    [Migration("20250330074811_fourth")]
+    partial class fourth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,7 +44,7 @@ namespace Flights.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PlaneID")
+                    b.Property<int>("PlaneID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartDateTime")
@@ -52,8 +55,6 @@ namespace Flights.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("FlightID");
-
-                    b.HasIndex("PlaneID");
 
                     b.ToTable("Flight");
                 });
@@ -95,6 +96,9 @@ namespace Flights.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("FK_Reservation_Flight_FlightID")
+                        .HasColumnType("int");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -113,40 +117,24 @@ namespace Flights.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PlaneID")
-                        .HasColumnType("int");
-
                     b.Property<string>("TicketType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ReservationID");
 
-                    b.HasIndex("FlightID");
-
-                    b.HasIndex("PlaneID");
+                    b.HasIndex("FK_Reservation_Flight_FlightID");
 
                     b.ToTable("Reservation");
-                });
-
-            modelBuilder.Entity("Flights.Models.Flight", b =>
-                {
-                    b.HasOne("Flights.Models.Plane", "Plane")
-                        .WithMany()
-                        .HasForeignKey("PlaneID");
-
-                    b.Navigation("Plane");
                 });
 
             modelBuilder.Entity("Flights.Models.Reservation", b =>
                 {
                     b.HasOne("Flights.Models.Flight", "Flight")
                         .WithMany("Reservations")
-                        .HasForeignKey("FlightID");
-
-                    b.HasOne("Flights.Models.Plane", null)
-                        .WithMany("Flights")
-                        .HasForeignKey("PlaneID");
+                        .HasForeignKey("FK_Reservation_Flight_FlightID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Flight");
                 });
@@ -154,11 +142,6 @@ namespace Flights.Migrations
             modelBuilder.Entity("Flights.Models.Flight", b =>
                 {
                     b.Navigation("Reservations");
-                });
-
-            modelBuilder.Entity("Flights.Models.Plane", b =>
-                {
-                    b.Navigation("Flights");
                 });
 #pragma warning restore 612, 618
         }
